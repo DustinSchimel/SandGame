@@ -10,6 +10,9 @@ public class SandLab
   public static final int SAND = 2;
   public static final int WATER = 3;
   public static final int SMOKE = 4;
+  public static final int DIRT = 5;
+  public static final int WOOD = 6;
+  public static final int RANDOM = 7;
   
   //do not add any more fields below
   private int[][] grid;
@@ -26,18 +29,21 @@ public class SandLab
     String[] names;
     // Change this value to add more buttons
     //Step 4,6
-    names = new String[5];
+    names = new String[8];
     // Each value needs a name for the button
     names[EMPTY] = "Empty";
     names[METAL] = "Metal";
     names[SAND] = "Sand";
     names[WATER] = "Water";
     names[SMOKE] = "Smoke";
+    names[DIRT] = "Dirt";
+    names[WOOD] = "Wood";
+    names[RANDOM] = "Random";
     
     //1. Add code to initialize the data member grid with same dimensions
     grid = new int[numRows][numCols];
     
-    display = new SandDisplay("Falling Sand", numRows, numCols, names);
+    display = new SandDisplay("Sand Game", numRows, numCols, names);
   }
   
   //called when the user clicks on a location using the given tool
@@ -77,6 +83,18 @@ public class SandLab
 			  {
 				  display.setColor(row, col, new Color(73, 73, 73));
 			  }
+			  else if (grid[row][col] == DIRT) 
+			  {
+				  display.setColor(row, col, new Color(87, 59, 12));
+			  }
+			  else if (grid[row][col] == WOOD) 
+			  {
+				  display.setColor(row, col, new Color(130, 82, 1));
+			  }
+			  else if (grid[row][col] == RANDOM) 
+			  {
+				  display.setColor(row, col, new Color(226, 88, 34));
+			  }
 		  }
 	  }
   }
@@ -94,7 +112,7 @@ public class SandLab
 	int randomRow = (int) (Math.random() * grid.length);
 	int randomCol = (int) (Math.random() * grid[0].length);
 	
-	if (randomRow != grid.length - 1)
+	if (randomRow != grid.length - 1)	//If the row is not the bottom row, objects with gravity
 	{	
 		if (grid[randomRow][randomCol] == SAND)
 		{
@@ -112,6 +130,24 @@ public class SandLab
 			{
 				grid[randomRow][randomCol] = SMOKE;
 				grid[randomRow + 1][randomCol] = SAND;
+			}
+		}
+		else if (grid[randomRow][randomCol] == DIRT)
+		{
+			if (grid[randomRow + 1][randomCol] == EMPTY)
+			{
+				grid[randomRow][randomCol] = EMPTY;
+				grid[randomRow + 1][randomCol] = DIRT;
+			}
+			if (grid[randomRow + 1][randomCol] == WATER)
+			{
+				grid[randomRow][randomCol] = WATER;
+				grid[randomRow + 1][randomCol] = DIRT;
+			}
+			if (grid[randomRow + 1][randomCol] == SMOKE)
+			{
+				grid[randomRow][randomCol] = SMOKE;
+				grid[randomRow + 1][randomCol] = DIRT;
 			}
 		}
 	}
@@ -243,8 +279,62 @@ public class SandLab
 				}
 			}
 		}
-	}
+	}	
 	
+	if (grid[randomRow][randomCol] == RANDOM)
+	{
+		if (randomRow != 0)
+		{	
+			int randomDirection = (int) (Math.random() * 4);
+			if (randomDirection == 0)	//Up
+			{
+				if (grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != RANDOM)
+				{
+					grid[randomRow - 1][randomCol] = RANDOM;
+				}
+			}
+			else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
+			{
+				if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != RANDOM)
+				{
+					grid[randomRow][randomCol + 1] = RANDOM;
+				}
+			}
+			else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
+			{
+				if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != RANDOM)
+				{
+					grid[randomRow][randomCol - 1 ] = RANDOM;
+				}
+			}
+			else if (randomDirection == 3 && randomCol - 1 != -1)	//Down
+			{
+				if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != RANDOM)
+				{
+					grid[randomRow][randomCol] = EMPTY;
+					grid[randomRow][randomCol -1 ] = SMOKE;
+				}
+			}
+		}
+		else
+		{
+			int randomDirection = (int) (Math.random() * 2);
+			if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
+			{
+				if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != RANDOM)
+				{
+					grid[randomRow][randomCol + 1] = RANDOM;
+				}
+			}
+			else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
+			{
+				if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != RANDOM)
+				{
+					grid[randomRow][randomCol -1 ] = RANDOM;
+				}
+			}
+		}
+	}
   }
   
   //do not modify this method!

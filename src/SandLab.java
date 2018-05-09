@@ -12,7 +12,7 @@ public class SandLab
   public static final int SMOKE = 4;
   public static final int DIRT = 5;
   public static final int WOOD = 6;
-  public static final int RANDOM = 7;
+  public static final int VIRUS = 7;
   
   //do not add any more fields below
   private int[][] grid;
@@ -38,7 +38,7 @@ public class SandLab
     names[SMOKE] = "Smoke";
     names[DIRT] = "Dirt";
     names[WOOD] = "Wood";
-    names[RANDOM] = "Random";
+    names[VIRUS] = "Virus";
     
     //1. Add code to initialize the data member grid with same dimensions
     grid = new int[numRows][numCols];
@@ -91,9 +91,9 @@ public class SandLab
 			  {
 				  display.setColor(row, col, new Color(130, 82, 1));
 			  }
-			  else if (grid[row][col] == RANDOM) 
+			  else if (grid[row][col] == VIRUS) 
 			  {
-				  display.setColor(row, col, new Color(226, 88, 34));
+				  display.setColor(row, col, new Color(255, 0, 255));
 			  }
 		  }
 	  }
@@ -281,58 +281,37 @@ public class SandLab
 		}
 	}	
 	
-	if (grid[randomRow][randomCol] == RANDOM)
+	if (grid[randomRow][randomCol] == VIRUS)
 	{
-		if (randomRow != 0)
-		{	
-			int randomDirection = (int) (Math.random() * 4);
-			if (randomDirection == 0)	//Up
+		int randomDirection = (int) (Math.random() * 4);
+		if (randomDirection == 0)	//Up
+		{
+			if (randomRow != 0 && grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != VIRUS)
 			{
-				if (grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != RANDOM)
-				{
-					grid[randomRow - 1][randomCol] = RANDOM;
-				}
-			}
-			else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
-			{
-				if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != RANDOM)
-				{
-					grid[randomRow][randomCol + 1] = RANDOM;
-				}
-			}
-			else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
-			{
-				if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != RANDOM)
-				{
-					grid[randomRow][randomCol - 1 ] = RANDOM;
-				}
-			}
-			else if (randomDirection == 3 && randomCol - 1 != -1)	//Down
-			{
-				if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != RANDOM)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol -1 ] = SMOKE;
-				}
+				grid[randomRow - 1][randomCol] = VIRUS;
 			}
 		}
-		else
+		else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
 		{
-			int randomDirection = (int) (Math.random() * 2);
-			if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
+			if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != VIRUS)
 			{
-				if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != RANDOM)
-				{
-					grid[randomRow][randomCol + 1] = RANDOM;
-				}
+				grid[randomRow][randomCol + 1] = VIRUS;
 			}
-			else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
+		}
+		else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
+		{
+			if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != VIRUS)
 			{
-				if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != RANDOM)
-				{
-					grid[randomRow][randomCol -1 ] = RANDOM;
-				}
+				grid[randomRow][randomCol - 1 ] = VIRUS;
 			}
+		}
+		else if (randomDirection == 3 /*&& randomCol - 1 != -1*/)	//Down
+		{
+			if (randomRow != grid.length - 1 && grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != VIRUS)
+			{
+				grid[randomRow + 1][randomCol] = VIRUS;
+			}
+			
 		}
 	}
   }

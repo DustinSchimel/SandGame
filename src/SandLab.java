@@ -12,7 +12,8 @@ public class SandLab
   public static final int SMOKE = 4;
   public static final int DIRT = 5;
   public static final int WOOD = 6;
-  public static final int VIRUS = 7;
+  public static final int PINK_SOLID_VIRUS = 7;
+  public static final int PURPLE_SOLID_VIRUS = 8;
   
   //do not add any more fields below
   private int[][] grid;
@@ -29,7 +30,7 @@ public class SandLab
     String[] names;
     // Change this value to add more buttons
     //Step 4,6
-    names = new String[8];
+    names = new String[9];
     // Each value needs a name for the button
     names[EMPTY] = "Empty";
     names[METAL] = "Metal";
@@ -38,7 +39,8 @@ public class SandLab
     names[SMOKE] = "Smoke";
     names[DIRT] = "Dirt";
     names[WOOD] = "Wood";
-    names[VIRUS] = "Virus";
+    names[PINK_SOLID_VIRUS] = "Pink Solid Virus";
+    names[PURPLE_SOLID_VIRUS] = "Purple Solid Virus";
     
     //1. Add code to initialize the data member grid with same dimensions
     grid = new int[numRows][numCols];
@@ -91,9 +93,13 @@ public class SandLab
 			  {
 				  display.setColor(row, col, new Color(130, 82, 1));
 			  }
-			  else if (grid[row][col] == VIRUS) 
+			  else if (grid[row][col] == PINK_SOLID_VIRUS) 
 			  {
 				  display.setColor(row, col, new Color(255, 0, 255));
+			  }
+			  else if (grid[row][col] == PURPLE_SOLID_VIRUS) 
+			  {
+				  display.setColor(row, col, new Color(138, 43, 226));
 			  }
 		  }
 	  }
@@ -281,35 +287,69 @@ public class SandLab
 		}
 	}	
 	
-	if (grid[randomRow][randomCol] == VIRUS)
+	if (grid[randomRow][randomCol] == PINK_SOLID_VIRUS)
 	{
 		int randomDirection = (int) (Math.random() * 4);
 		if (randomDirection == 0)	//Up
 		{
-			if (randomRow != 0 && grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != VIRUS)
+			if (randomRow != 0 && grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != PINK_SOLID_VIRUS)
 			{
-				grid[randomRow - 1][randomCol] = VIRUS;
+				grid[randomRow - 1][randomCol] = PINK_SOLID_VIRUS;
 			}
 		}
 		else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
 		{
-			if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != VIRUS)
+			if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != PINK_SOLID_VIRUS)
 			{
-				grid[randomRow][randomCol + 1] = VIRUS;
+				grid[randomRow][randomCol + 1] = PINK_SOLID_VIRUS;
 			}
 		}
 		else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
 		{
-			if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != VIRUS)
+			if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != PINK_SOLID_VIRUS)
 			{
-				grid[randomRow][randomCol - 1 ] = VIRUS;
+				grid[randomRow][randomCol - 1 ] = PINK_SOLID_VIRUS;
 			}
 		}
 		else if (randomDirection == 3 /*&& randomCol - 1 != -1*/)	//Down
 		{
-			if (randomRow != grid.length - 1 && grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != VIRUS)
+			if (randomRow != grid.length - 1 && grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != PINK_SOLID_VIRUS)
 			{
-				grid[randomRow + 1][randomCol] = VIRUS;
+				grid[randomRow + 1][randomCol] = PINK_SOLID_VIRUS;
+			}
+			
+		}
+	}
+	
+	if (grid[randomRow][randomCol] == PURPLE_SOLID_VIRUS)
+	{
+		int randomDirection = (int) (Math.random() * 4);
+		if (randomDirection == 0)	//Up
+		{
+			if (randomRow != 0 && grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != PURPLE_SOLID_VIRUS)
+			{
+				grid[randomRow - 1][randomCol] = PURPLE_SOLID_VIRUS;
+			}
+		}
+		else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
+		{
+			if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != PURPLE_SOLID_VIRUS)
+			{
+				grid[randomRow][randomCol + 1] = PURPLE_SOLID_VIRUS;
+			}
+		}
+		else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
+		{
+			if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != PURPLE_SOLID_VIRUS)
+			{
+				grid[randomRow][randomCol - 1 ] = PURPLE_SOLID_VIRUS;
+			}
+		}
+		else if (randomDirection == 3 /*&& randomCol - 1 != -1*/)	//Down
+		{
+			if (randomRow != grid.length - 1 && grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != PURPLE_SOLID_VIRUS)
+			{
+				grid[randomRow + 1][randomCol] = PURPLE_SOLID_VIRUS;
 			}
 			
 		}

@@ -25,7 +25,6 @@ public class SandDisplay extends JComponent implements MouseListener,
     this.numCols = numCols;
     tool = 1;
     mouseLoc = null;
-    speed = computeSpeed(1);
     
     //determine cell size
     cellSize = Math.max(1, 600 / Math.max(numRows, numCols));
@@ -60,18 +59,20 @@ public class SandDisplay extends JComponent implements MouseListener,
     
     buttons[tool].setSelected(true);
    
-    slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+    slider = new JSlider(JSlider.HORIZONTAL, 0, 25, 20);
     slider.addChangeListener(this);
     slider.setMajorTickSpacing(5);
-    slider.setSnapToTicks(true);
+    slider.setSnapToTicks(false);
     slider.setPaintTicks(true);
     Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-    labelTable.put(new Integer(0), new JLabel("Slow"));
-    labelTable.put(new Integer(100), new JLabel("Fast"));
+    labelTable.put(new Integer(0), new JLabel("Pause"));
+    labelTable.put(new Integer(25), new JLabel("Hyper Speed"));
     slider.setLabelTable(labelTable);
     slider.setPaintLabels(true);
 
     frame.getContentPane().add(slider);
+    
+    speed = computeSpeed(slider.getValue());
 
     frame.pack();
     frame.setVisible(true);
@@ -174,10 +175,15 @@ public class SandDisplay extends JComponent implements MouseListener,
   }
   
   //returns speed based on sliderValue
-  //speed of 0 returns 10^3
-  //speed of 100 returns 10^6
   private int computeSpeed(int sliderValue)
   {
-    return (int)Math.pow(10, 0.05 * sliderValue + 1);
+	  if (sliderValue == 0)
+	  {
+		  return 0;
+	  }
+	  else
+	  {
+		  return (int)Math.pow(10, 0.16 * sliderValue);
+	  }
   }
 }

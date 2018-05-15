@@ -32,7 +32,7 @@ public class SandLab
     //Step 4,6
     names = new String[9];
     // Each value needs a name for the button
-    names[EMPTY] = "Empty";
+    names[EMPTY] = "Eraser";
     names[METAL] = "Metal";
     names[SAND] = "Sand";
     names[WATER] = "Water";
@@ -363,7 +363,7 @@ public class SandLab
     {
       for (int i = 0; i < display.getSpeed(); i++)
       {
-        step();
+    	step();
       }
       updateDisplay();
       display.repaint();

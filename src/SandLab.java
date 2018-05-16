@@ -14,6 +14,7 @@ public class SandLab
   public static final int WOOD = 6;
   public static final int PINK_SOLID_VIRUS = 7;
   public static final int PURPLE_SOLID_VIRUS = 8;
+  public static final int ACID = 9;
   
   //do not add any more fields below
   private int[][] grid;
@@ -30,7 +31,7 @@ public class SandLab
     String[] names;
     // Change this value to add more buttons
     //Step 4,6
-    names = new String[9];
+    names = new String[10];
     // Each value needs a name for the button
     names[EMPTY] = "Eraser";
     names[METAL] = "Metal";
@@ -39,8 +40,9 @@ public class SandLab
     names[SMOKE] = "Smoke";
     names[DIRT] = "Dirt";
     names[WOOD] = "Wood";
-    names[PINK_SOLID_VIRUS] = "Pink Solid Virus";
-    names[PURPLE_SOLID_VIRUS] = "Purple Solid Virus";
+    names[PINK_SOLID_VIRUS] = "Pink Virus";
+    names[PURPLE_SOLID_VIRUS] = "Purple Virus";
+    names[ACID] = "Acid";
     
     //1. Add code to initialize the data member grid with same dimensions
     grid = new int[numRows][numCols];
@@ -101,6 +103,10 @@ public class SandLab
 			  {
 				  display.setColor(row, col, new Color(138, 43, 226));
 			  }
+			  else if (grid[row][col] == ACID) 
+			  {
+				  display.setColor(row, col, new Color(137, 255, 0));
+			  }
 		  }
 	  }
   }
@@ -160,77 +166,45 @@ public class SandLab
 	
 	if (grid[randomRow][randomCol] == WATER)
 	{
-		if (randomRow != grid.length - 1)
-		{	
-			int randomDirection = (int) (Math.random() * 3);
-			if (randomDirection == 0)	//Down
+		int randomDirection = (int) (Math.random() * 3);
+		
+		if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
+		{
+			if (grid[randomRow][randomCol + 1] == EMPTY)
 			{
-				if (grid[randomRow + 1][randomCol] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow + 1][randomCol] = WATER;
-				}
-				else if (grid[randomRow + 1][randomCol] == SMOKE)
-				{
-					grid[randomRow][randomCol] = SMOKE;
-					grid[randomRow + 1][randomCol] = WATER;
-				}
+				grid[randomRow][randomCol + 1] = WATER;
+				grid[randomRow][randomCol] = EMPTY;
 			}
-			else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
+			else if (grid[randomRow][randomCol + 1] == SMOKE)
 			{
-				if (grid[randomRow][randomCol + 1] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol + 1] = WATER;
-				}
-				else if (grid[randomRow][randomCol + 1] == SMOKE)
-				{
-					grid[randomRow][randomCol] = SMOKE;
-					grid[randomRow][randomCol + 1] = WATER;
-				}
-			}
-			else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
-			{
-				if (grid[randomRow][randomCol - 1] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol -1 ] = WATER;
-				}
-				else if (grid[randomRow][randomCol - 1] == SMOKE)
-				{
-					grid[randomRow][randomCol] = SMOKE;
-					grid[randomRow][randomCol -1 ] = WATER;
-				}
+				grid[randomRow][randomCol + 1] = WATER;
+				grid[randomRow][randomCol] = SMOKE;
 			}
 		}
-		else
+		else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
 		{
-			int randomDirection = (int) (Math.random() * 2);
-			if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
+			if (grid[randomRow][randomCol - 1] == EMPTY)
 			{
-				if (grid[randomRow][randomCol + 1] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol + 1] = WATER;
-				}
-				else if (grid[randomRow][randomCol + 1] == SMOKE)
-				{
-					grid[randomRow][randomCol] = SMOKE;
-					grid[randomRow][randomCol + 1] = WATER;
-				}
+				grid[randomRow][randomCol - 1 ] = WATER;
+				grid[randomRow][randomCol] = EMPTY;
 			}
-			else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
+			else if (grid[randomRow][randomCol - 1] == SMOKE)
 			{
-				if (grid[randomRow][randomCol - 1] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol -1 ] = WATER;
-				}
-				else if (grid[randomRow][randomCol - 1] == SMOKE)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol -1 ] = WATER;
-				}
+				grid[randomRow][randomCol -1 ] = WATER;
+				grid[randomRow][randomCol] = SMOKE;
+			}
+		}
+		else if (randomDirection == 2 && randomRow != grid.length - 1)	//Down
+		{
+			if (grid[randomRow + 1][randomCol] == EMPTY)
+			{
+				grid[randomRow + 1][randomCol] = WATER;
+				grid[randomRow][randomCol] = EMPTY;
+			}
+			else if (grid[randomRow + 1][randomCol] == SMOKE)
+			{
+				grid[randomRow + 1][randomCol] = WATER;
+				grid[randomRow][randomCol] = SMOKE;
 			}
 		}
 	}
@@ -350,6 +324,60 @@ public class SandLab
 			if (randomRow != grid.length - 1 && grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != PURPLE_SOLID_VIRUS)
 			{
 				grid[randomRow + 1][randomCol] = PURPLE_SOLID_VIRUS;
+			}
+			
+		}
+	}
+	
+	if (grid[randomRow][randomCol] == ACID)
+	{
+		int randomDirection = (int) (Math.random() * 3);
+		
+		if (randomRow != 0)
+		{
+			if (grid[randomRow - 1][randomCol] == SAND || grid[randomRow - 1][randomCol] == WATER || grid[randomRow - 1][randomCol] == DIRT)
+			{
+				grid[randomRow - 1][randomCol] = EMPTY;
+			}
+		}
+		
+		if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
+		{
+			if (grid[randomRow][randomCol + 1] == EMPTY)	//Normal liquid flow
+			{
+				grid[randomRow][randomCol + 1] = ACID;
+				grid[randomRow][randomCol] = EMPTY;
+			}
+			else if (grid[randomRow][randomCol + 1] != ACID)	//Destroys block to the right
+			{
+				grid[randomRow][randomCol + 1] = EMPTY;
+				grid[randomRow][randomCol] = EMPTY;
+			}
+		}
+		else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
+		{
+			if (grid[randomRow][randomCol - 1] == EMPTY)
+			{
+				grid[randomRow][randomCol - 1 ] = ACID;
+				grid[randomRow][randomCol] = EMPTY;
+			}
+			else if (grid[randomRow][randomCol - 1] != ACID)
+			{
+				grid[randomRow][randomCol - 1] = EMPTY;
+				grid[randomRow][randomCol] = EMPTY;
+			}
+		}
+		else if (randomDirection == 2 && randomRow != grid.length - 1)	//Down
+		{
+			if (grid[randomRow + 1][randomCol] == EMPTY)
+			{
+				grid[randomRow + 1][randomCol] = ACID;
+				grid[randomRow][randomCol] = EMPTY;
+			}
+			else if (grid[randomRow + 1][randomCol] != ACID)
+			{
+				grid[randomRow + 1][randomCol] = EMPTY;
+				grid[randomRow][randomCol] = EMPTY;
 			}
 			
 		}

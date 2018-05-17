@@ -10,8 +10,8 @@ public class SandLab
   public static final int SMOKE = 4;
   public static final int DIRT = 5;
   public static final int WOOD = 6;
-  public static final int PINK_SOLID_VIRUS = 7;
-  public static final int PURPLE_SOLID_VIRUS = 8;
+  public static final int PINK_VIRUS = 7;
+  public static final int PURPLE_VIRUS = 8;
   public static final int ACID = 9;
   
   private int[][] grid;
@@ -34,8 +34,8 @@ public class SandLab
     names[SMOKE] = "Smoke";
     names[DIRT] = "Dirt";
     names[WOOD] = "Wood";
-    names[PINK_SOLID_VIRUS] = "Pink Virus";
-    names[PURPLE_SOLID_VIRUS] = "Purple Virus";
+    names[PINK_VIRUS] = "Pink Virus";
+    names[PURPLE_VIRUS] = "Purple Virus";
     names[ACID] = "Acid";
     
     grid = new int[numRows][numCols];
@@ -84,11 +84,11 @@ public class SandLab
 			  {
 				  display.setColor(row, col, new Color(130, 82, 1));
 			  }
-			  else if (grid[row][col] == PINK_SOLID_VIRUS) 
+			  else if (grid[row][col] == PINK_VIRUS) 
 			  {
 				  display.setColor(row, col, new Color(255, 0, 255));
 			  }
-			  else if (grid[row][col] == PURPLE_SOLID_VIRUS) 
+			  else if (grid[row][col] == PURPLE_VIRUS) 
 			  {
 				  display.setColor(row, col, new Color(138, 43, 226));
 			  }
@@ -144,6 +144,25 @@ public class SandLab
 				grid[randomRow + 1][randomCol] = DIRT;
 			}
 		}
+		else if (grid[randomRow][randomCol] == PURPLE_VIRUS)
+		{
+			if (grid[randomRow + 1][randomCol] == EMPTY)
+			{
+				grid[randomRow][randomCol] = EMPTY;
+				grid[randomRow + 1][randomCol] = PURPLE_VIRUS;
+			}
+			if (grid[randomRow + 1][randomCol] == WATER)
+			{
+				grid[randomRow][randomCol] = WATER;
+				grid[randomRow + 1][randomCol] = PURPLE_VIRUS;
+			}
+			if (grid[randomRow + 1][randomCol] == SMOKE)
+			{
+				grid[randomRow][randomCol] = SMOKE;
+				grid[randomRow + 1][randomCol] = PURPLE_VIRUS;
+			}
+		}
+		
 	}
 	
 	if (grid[randomRow][randomCol] == WATER)
@@ -222,73 +241,77 @@ public class SandLab
 		}
 	}	
 	
-	if (grid[randomRow][randomCol] == PINK_SOLID_VIRUS)
+	if (grid[randomRow][randomCol] == PINK_VIRUS)
 	{
 		int randomDirection = (int) (Math.random() * 4);
-		if (randomDirection == 0)	//Up
+		
+		if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
 		{
-			if (randomRow != 0 && grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != PINK_SOLID_VIRUS)
+			if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != PINK_VIRUS)
 			{
-				grid[randomRow - 1][randomCol] = PINK_SOLID_VIRUS;
+				grid[randomRow][randomCol + 1] = PINK_VIRUS;
 			}
 		}
-		else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
+		else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
 		{
-			if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != PINK_SOLID_VIRUS)
+			if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != PINK_VIRUS)
 			{
-				grid[randomRow][randomCol + 1] = PINK_SOLID_VIRUS;
+				grid[randomRow][randomCol - 1 ] = PINK_VIRUS;
 			}
 		}
-		else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
+		else if (randomDirection == 2 && randomRow != 0)	//Up
 		{
-			if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != PINK_SOLID_VIRUS)
+			if (grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != PINK_VIRUS)
 			{
-				grid[randomRow][randomCol - 1 ] = PINK_SOLID_VIRUS;
+				grid[randomRow - 1][randomCol] = PINK_VIRUS;
 			}
 		}
-		else if (randomDirection == 3 /*&& randomCol - 1 != -1*/)	//Down
+		else if (randomDirection == 3 && randomRow != grid.length - 1)	//Down
 		{
-			if (randomRow != grid.length - 1 && grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != PINK_SOLID_VIRUS)
+			if (grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != PINK_VIRUS)
 			{
-				grid[randomRow + 1][randomCol] = PINK_SOLID_VIRUS;
+				grid[randomRow + 1][randomCol] = PINK_VIRUS;
 			}
 			
 		}
 	}
 	
-	if (grid[randomRow][randomCol] == PURPLE_SOLID_VIRUS)
+	if (grid[randomRow][randomCol] == PURPLE_VIRUS)
 	{
 		int randomDirection = (int) (Math.random() * 4);
-		if (randomDirection == 0)	//Up
+		
+		if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
 		{
-			if (randomRow != 0 && grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != PURPLE_SOLID_VIRUS)
+			if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != PURPLE_VIRUS)
 			{
-				grid[randomRow - 1][randomCol] = PURPLE_SOLID_VIRUS;
+				grid[randomRow][randomCol + 1] = PURPLE_VIRUS;
 			}
 		}
-		else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
+		else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
 		{
-			if (grid[randomRow][randomCol + 1] != EMPTY && grid[randomRow][randomCol + 1] != PURPLE_SOLID_VIRUS)
+			if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != PURPLE_VIRUS)
 			{
-				grid[randomRow][randomCol + 1] = PURPLE_SOLID_VIRUS;
+				grid[randomRow][randomCol - 1 ] = PURPLE_VIRUS;
 			}
 		}
-		else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
+		else if (randomDirection == 2 && randomRow != 0)	//Up
 		{
-			if (grid[randomRow][randomCol - 1] != EMPTY && grid[randomRow][randomCol - 1] != PURPLE_SOLID_VIRUS)
+			if (grid[randomRow - 1][randomCol] != EMPTY && grid[randomRow - 1][randomCol] != PURPLE_VIRUS)
 			{
-				grid[randomRow][randomCol - 1 ] = PURPLE_SOLID_VIRUS;
+				grid[randomRow - 1][randomCol] = PURPLE_VIRUS;
 			}
 		}
-		else if (randomDirection == 3 /*&& randomCol - 1 != -1*/)	//Down
+		else if (randomDirection == 3 && randomRow != grid.length - 1)	//Down
 		{
-			if (randomRow != grid.length - 1 && grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != PURPLE_SOLID_VIRUS)
+			if (grid[randomRow + 1][randomCol] != EMPTY && grid[randomRow + 1][randomCol] != PURPLE_VIRUS)
 			{
-				grid[randomRow + 1][randomCol] = PURPLE_SOLID_VIRUS;
+				grid[randomRow + 1][randomCol] = PURPLE_VIRUS;
 			}
 			
 		}
 	}
+	
+	
 	
 	if (grid[randomRow][randomCol] == ACID)
 	{

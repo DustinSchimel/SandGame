@@ -1,3 +1,5 @@
+package controller;
+
 import java.awt.*;
 import java.util.*;
 
@@ -25,6 +27,7 @@ public class SandLab
   public SandLab(int numRows, int numCols)
   {
     String[] names;
+    
     names = new String[10];
     
     names[EMPTY] = "Eraser";
@@ -37,7 +40,7 @@ public class SandLab
     names[PINK_VIRUS] = "Pink Virus";
     names[PURPLE_VIRUS] = "Purple Virus";
     names[ACID] = "Acid";
-    
+
     grid = new int[numRows][numCols];
     
     display = new SandDisplay("Sand Game", numRows, numCols, names);
@@ -386,5 +389,10 @@ public class SandLab
         locationClicked(mouseLoc[0], mouseLoc[1], display.getTool());
       }
     }
+  }
+
+  public int[][] getGrid()
+  {
+	  return this.grid;
   }
 }

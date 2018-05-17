@@ -299,6 +299,7 @@ public class SandLab
 			if (grid[randomRow - 1][randomCol] == SAND || grid[randomRow - 1][randomCol] == WATER || grid[randomRow - 1][randomCol] == DIRT)
 			{
 				grid[randomRow - 1][randomCol] = EMPTY;
+				grid[randomRow][randomCol] = EMPTY;
 			}
 		}
 		

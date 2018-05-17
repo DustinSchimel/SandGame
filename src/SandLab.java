@@ -3,8 +3,6 @@ import java.util.*;
 
 public class SandLab
 {
-  //Step 4,6
-  //add constants for particle types here
   public static final int EMPTY = 0;
   public static final int METAL = 1;
   public static final int SAND = 2;
@@ -16,10 +14,8 @@ public class SandLab
   public static final int PURPLE_SOLID_VIRUS = 8;
   public static final int ACID = 9;
   
-  //do not add any more fields below
   private int[][] grid;
   private SandDisplay display;
-  
   
   /**
    * Constructor for SandLab
@@ -29,10 +25,8 @@ public class SandLab
   public SandLab(int numRows, int numCols)
   {
     String[] names;
-    // Change this value to add more buttons
-    //Step 4,6
     names = new String[10];
-    // Each value needs a name for the button
+    
     names[EMPTY] = "Eraser";
     names[METAL] = "Metal";
     names[SAND] = "Sand";
@@ -44,7 +38,6 @@ public class SandLab
     names[PURPLE_SOLID_VIRUS] = "Purple Virus";
     names[ACID] = "Acid";
     
-    //1. Add code to initialize the data member grid with same dimensions
     grid = new int[numRows][numCols];
     
     display = new SandDisplay("Sand Game", numRows, numCols, names);
@@ -53,16 +46,12 @@ public class SandLab
   //called when the user clicks on a location using the given tool
   private void locationClicked(int row, int col, int tool)
   {
-	  //2. Assign the values associated with the parameters to the grid
+	  //Assign the values associated with the parameters to the grid
 	  grid[row][col] = tool;
-   
   }
 
-  //copies each element of grid into the display
   public void updateDisplay()
   {
-      //Step 3
-	  //Hint - use a nested for loop
 	  for (int row = 0; row < grid.length; row++)
 	  {
 		  for (int col = 0; col < grid[0].length; col++)
@@ -111,16 +100,9 @@ public class SandLab
 	  }
   }
 
-  //Step 5,7
   //called repeatedly.
-  //causes one random particle in grid to maybe do something.
   public void step()
   {
-    //Remember, you need to access both row and column to specify a spot in the array
-    //The scalar refers to how big the value could be
-    //int someRandom = (int) (Math.random() * scalar)
-    //remember that you need to watch for the edges of the array
-    
 	int randomRow = (int) (Math.random() * grid.length);
 	int randomCol = (int) (Math.random() * grid[0].length);
 	
@@ -209,54 +191,33 @@ public class SandLab
 		}
 	}
 	
+	
 	if (grid[randomRow][randomCol] == SMOKE)
 	{
-		if (randomRow != 0)
-		{	
-			int randomDirection = (int) (Math.random() * 3);
-			if (randomDirection == 0)	//Up
+		int randomDirection = (int) (Math.random() * 3);
+		
+		if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
+		{
+			if (grid[randomRow][randomCol + 1] == EMPTY)
 			{
-				if (grid[randomRow - 1][randomCol] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow - 1][randomCol] = SMOKE;
-				}
-			}
-			else if (randomDirection == 1 && randomCol + 1 != grid[0].length)	//Right
-			{
-				if (grid[randomRow][randomCol + 1] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol + 1] = SMOKE;
-				}
-			}
-			else if (randomDirection == 2 && randomCol - 1 != -1)	//Left
-			{
-				if (grid[randomRow][randomCol - 1] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol -1 ] = SMOKE;
-				}
+				grid[randomRow][randomCol + 1] = SMOKE;
+				grid[randomRow][randomCol] = EMPTY;
 			}
 		}
-		else
+		else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
 		{
-			int randomDirection = (int) (Math.random() * 2);
-			if (randomDirection == 0 && randomCol + 1 != grid[0].length)	//Right
+			if (grid[randomRow][randomCol - 1] == EMPTY)
 			{
-				if (grid[randomRow][randomCol + 1] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol + 1] = SMOKE;
-				}
+				grid[randomRow][randomCol -1 ] = SMOKE;
+				grid[randomRow][randomCol] = EMPTY;
 			}
-			else if (randomDirection == 1 && randomCol - 1 != -1)	//Left
+		}
+		else if (randomDirection == 2 && randomRow != 0)	//Up
+		{
+			if (grid[randomRow - 1][randomCol] == EMPTY)
 			{
-				if (grid[randomRow][randomCol - 1] == EMPTY)
-				{
-					grid[randomRow][randomCol] = EMPTY;
-					grid[randomRow][randomCol -1 ] = SMOKE;
-				}
+				grid[randomRow - 1][randomCol] = SMOKE;
+				grid[randomRow][randomCol] = EMPTY;
 			}
 		}
 	}	
@@ -384,10 +345,9 @@ public class SandLab
 	}
   }
   
-  //do not modify this method!
   public void run()
   {
-    while (true) // infinite loop
+    while (true) //infinite loop
     {
       for (int i = 0; i < display.getSpeed(); i++)
       {
